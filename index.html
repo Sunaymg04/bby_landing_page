@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Mi Amor - 14 de Febrero</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff6b6b;
+            --secondary: #4ecdc4;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --accent: #ffd166;
+            --purple: #9d4edd;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, #0f0f23 100%);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Floating hearts animation */
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0;
+            animation: float 15s infinite ease-in;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            padding: 80px 0 60px;
+            position: relative;
+        }
+
+        .header-title {
+            font-size: 5rem;
+            margin-bottom: 25px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            animation: pulse 2s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
+        .header-subtitle {
+            font-size: 1.8rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+            background: linear-gradient(45deg, var(--secondary), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        /* Photos Section */
+        .photos-section {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 50px;
+            color: var(--secondary);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .photo-card {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 350px;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-15px) rotate(2deg);
+            box-shadow: 0 25px 50px rgba(255, 107, 107, 0.5);
+            z-index: 10;
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            filter: brightness(0.9) contrast(1.1);
+        }
+
+        .photo-card:hover img {
+            transform: scale(1.1) rotate(-2deg);
+            filter: brightness(1.1) contrast(1.2) saturate(1.2);
+        }
+
+        .photo-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .photo-card:hover .photo-overlay {
+            transform: translateY(0);
+        }
+
+        .photo-caption {
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease 0.2s;
+        }
+
+        .photo-card:hover .photo-caption {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Quotes Section */
+        .quotes-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.8) 0%, rgba(15, 15, 35, 0.9) 100%);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .quotes-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .quote-card {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.15) 0%, rgba(78, 205, 196, 0.15) 100%);
+            padding: 40px;
+            border-radius: 25px;
+            border-left: 5px solid var(--primary);
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .quote-card:hover {
+            transform: translateX(15px) scale(1.02);
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.25) 0%, rgba(78, 205, 196, 0.25) 100%);
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+        }
+
+        .quote-text {
+            font-size: 1.4rem;
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.8;
+            position: relative;
+            padding: 0 30px;
+        }
+
+        .quote-text::before,
+        .quote-text::after {
+            content: '"';
+            font-size: 3rem;
+            color: var(--primary);
+            opacity: 0.3;
+            position: absolute;
+        }
+
+        .quote-text::before {
+            top: -20px;
+            left: 0;
+        }
+
+        .quote-text::after {
+            bottom: -40px;
+            right: 0;
+        }
+
+        .quote-author {
+            text-align: right;
+            font-weight: bold;
+            color: var(--secondary);
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        /* Message Section */
+        .message-section {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .message-content {
+            max-width: 900px;
+            margin: 0 auto;
+            font-size: 1.3rem;
+            line-height: 2;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+            padding: 50px;
+            border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .message-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 107, 107, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .heart-symbol {
+            color: var(--primary);
+            font-size: 2rem;
+            animation: heartbeat 1.5s infinite;
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            5% { transform: scale(1.2); }
+            10% { transform: scale(1); }
+            15% { transform: scale(1.2); }
+            50% { transform: scale(1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px 0 80px;
+            background: rgba(0, 0, 0, 0.4);
+            margin-top: 40px;
+            position: relative;
+        }
+
+        .footer-text {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, var(--secondary), var(--purple));
+            -webkit-background-clip: text;
+            /*-webkit-text-fill-color: transparent;*/
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        .date {
+            font-weight: bold;
+            color: var(--accent);
+            font-size: 1.6rem;
+            text-shadow: 0 0 10px rgba(255, 209, 102, 0.5);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 3rem;
+            }
+            
+            .header-subtitle {
+                font-size: 1.4rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .quote-text {
+                font-size: 1.2rem;
+            }
+            
+            .photos-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .message-content {
+                padding: 30px;
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-title {
+                font-size: 2.2rem;
+            }
+            
+            .header-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .photo-card {
+                height: 280px;
+            }
+        }
+
+        /* Loading animation */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 1;
+            transition: opacity 1s ease;
+        }
+
+        .loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader {
+            width: 80px;
+            height: 80px;
+            position: relative;
+        }
+
+        .loader-heart {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            animation: heartBeat 1.2s infinite;
+        }
+
+        .loader-heart:nth-child(1) { animation-delay: 0s; }
+        .loader-heart:nth-child(2) { animation-delay: 0.2s; }
+        .loader-heart:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes heartBeat {
+            0%, 40%, 80%, 100% { transform: scale(0.5); opacity: 0; }
+            20% { transform: scale(1.2); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="loader">
+            <div class="loader-heart" style="color: #ff6b6b;">❤️</div>
+            <div class="loader-heart" style="color: #4ecdc4;">❤️</div>
+            <div class="loader-heart" style="color: #ffd166;">❤️</div>
+        </div>
+    </div>
+
+    <!-- Floating Hearts Background -->
+    <div class="floating-hearts" id="floatingHearts"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1 class="header-title">Te Amo</h1>
+            <p class="header-subtitle">Una página especial para el amor de mi vida en este San Valentín</p>
+        </header>
+
+        <!-- Photos Section -->
+        <section class="photos-section">
+            <h2 class="section-title">Nuestros Momentos</h2>
+            <div class="photos-grid">
+                <!-- REPLACE THESE IMAGES WITH YOUR OWN PHOTOS -->
+                <!-- Foto 1: Cambia esta URL por la ruta de tu primera foto -->
+                <div class="photo-card">
+                    <img src="images/ChatGPT Image 4 feb 2026, 11_44_08.png" alt="Nuestro boceto">
+                    <div class="photo-overlay">
+                        <div class="photo-caption">Nuestro boceto</div>
+                    </div>
+                </div>
+                <!-- Foto 2: Cambia esta URL por la ruta de tu segunda foto -->
+                <div class="photo-card">
+                    <img src="images/IMG_3808.JPG" alt="La icónica foto de Varadero">
+                    <div class="photo-overlay">
+                        <div class="photo-caption">La icónica foto de Varadero</div>
+                    </div>
+                </div>
+                <!-- Foto 3: Cambia esta URL por la ruta de tu tercera foto -->
+                <div class="photo-card">
+                    <img src="images/IMG_3922.JPG" alt="Cuando éramos flaquitos">
+                    <div class="photo-overlay">
+                        <div class="photo-caption">Cuando éramos flaquitos </div>
+                    </div>
+                </div>
+                <!-- Foto 4: Cambia esta URL por la ruta de tu cuarta foto -->
+                <div class="photo-card">
+                    <img src="images/IMG_3953.JPG" alt="Qué ganas de volver a comer semejante cantidad de dulce">
+                    <div class="photo-overlay">
+                        <div class="photo-caption">Qué ganas de volver a comer semejante cantidad de dulce</div>
+                    </div>
+                </div>
+                <!-- Foto 5:Pasé mi cumple solos tu y yo y por eso creo que ha sido el mejor-->
+                 <div class="photo-card">
+                    <img src="images/IMG_3986.JPG" alt="Pasé mi cumple solos tu y yo y por eso creo que ha sido el mejor">
+                    <div class="photo-overlay">
+                        <div class="photo-caption">Pasé mi cumple solos tu y yo y por eso creo que ha sido el mejor</div>
+                    </div>
+                </div>
+                <!--Foto 6: Creo que ya no me sirve ese vestido -->
+                 <div class="photo-card">
+                    <img src="images/IMG_3990.JPG" alt="Creo que ya no me sirve ese vestido">
+                    <div class="photo-overlay">
+                        <div class="photo-caption">Creo que ya no me sirve ese vestido</div>
+                    </div>
+                </div>
+                <!--Foto 7: Nuestra bebé Xena-->
+                <div class="photo-card">
+                    <img src="images/IMG_4095.png" alt="Nuestra bebé xena">
+                    <div class="photo-overlay">
+                        <div class="photo-caption">Nuestra bebé Xena</div>
+                    </div>
+                </div>
+                <!--Foto 8: Una mia porque quede muy sexy-->
+                <div class="photo-card">
+                    <img src="images/IMG_4897.JPG" alt="Una mia porque quede muy sexy">
+                    <div class="photo-overlay">
+                        <div class="photo-caption">Una mia porque quede muy sexy</div>
+                    </div>
+                </div>
+                <!--Foto 9: Por qué no nos hemos vuelto a hacer skincare juntos? -->
+                 <div class="photo-card">
+                    <img src="images/IMG_E4087.JPG" alt="Por qué no nos hemos vuelto a hacer skincare juntos?">
+                    <div class="photo-overlay">
+                        <div class="photo-caption">Por qué no nos hemos vuelto a hacer skincare juntos?</div>
+                    </div>
+                </div>
+                <!--Foto 10: -->
+                <div class="photo-card">
+                    <img src="images/WhatsApp Image 2026-02-04 at 11.04.01 AM.jpeg" alt="Nuestro viaje a la granjita">
+                    <div class="photo-overlay">
+                        <div class="photo-caption">Nuestro viaje a la granjita</div>
+                    </div>
+                </div>
+                <!--Foto 11: -->
+                <div class="photo-card">
+                    <img src="images/WhatsApp Image 2026-02-04 at 11.04.03 AM.jpeg" alt="Simplemente te amo">
+                    <div class="photo-overlay">
+                        <div class="photo-caption">Simplemente te amo </div>
+                    </div>
+                </div>
+                <!--Foto 12: -->
+                 <div class="photo-card">
+                    <img src="images/WhatsApp Image 2026-02-04 at 11.04.04 AM.jpeg" alt="Como sacados de la peli del lago">
+                    <div class="photo-overlay">
+                        <div class="photo-caption">Como sacados de la peli del lago azul </div>
+                    </div>
+                </div>
+                <!--Foto 13: -->
+                <div class="photo-card">
+                    <img src="images/WhatsApp Image 2026-02-04 at 11.04.05 AM.jpeg" alt="mua">
+                    <div class="photo-overlay">
+                        <div class="photo-caption">Mua </div>
+                    </div>
+                </div>
+                <!--Foto 14: -->
+                 <div class="photo-card">
+                    <img src="images/WhatsApp Image 2026-02-04 at 11.04.06 AM.jpeg" alt="Obra titulada: Beso bajo la cascada">
+                    <div class="photo-overlay">
+                        <div class="photo-caption">Obra titulada: Beso bajo la cascada </div>
+                    </div>
+                </div>
+                <!--Foto 15: -->
+                 <div class="photo-card">
+                    <img src="images/WhatsApp Image 2026-02-04 at 2.27.24 PM.jpeg" alt="Piensas que quedaste guapo pero yo quedé mejor">
+                    <div class="photo-overlay">
+                        <div class="photo-caption">Piensas que quedaste guapo pero yo quedé mejor </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quotes Section -->
+        <section class="quotes-section">
+            <h2 class="section-title">Frases Para Ti</h2>
+            <div class="quotes-container">
+                <div class="quote-card">
+                    <p class="quote-text">"From the moment I saw you trying to go over the wall, I have loved you desperately. I cannot breathe when you are not near. I love you, Charlotte. My heart calls your name." (Lo siento la tentasión fue demasiada tenia que hacerlo)</p>
+                    <p class="quote-author">— King George</p>
+                </div>
+                <div class="quote-card">
+                    <p class="quote-text">Cada día a tu lado es un regalo que atesoro. Eres mi mejor decisión.</p>
+                    <p class="quote-author">— Para él</p>
+                </div>
+                <div class="quote-card">
+                    <p class="quote-text">El tiempo se detiene cuando estoy contigo, y el mundo desaparece cuando me miras.</p>
+                    <p class="quote-author">— Frases cursis de una novia cursi</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Message Section -->
+        <section class="message-section">
+            <h2 class="section-title">Mi Mensaje Para Ti</h2>
+            <div class="message-content">
+                <p>
+                    Mi amor, en este día tan especial quiero recordarte lo mucho que significas para mí. 
+                    Desde el primer momento en que te vi, supe que eras diferente. 
+                    Cada risa, cada lágrima, cada aventura que hemos compartido ha fortalecido lo que siento por ti.
+                </p>
+                <br>
+                <p>
+                    Eres mi mejor amigo, mi confidente, mi todo. Gracias por amarme tal como soy (eso creo), 
+                    por apoyarme en mis sueños (no sabes cuan importante es eso para mi) y por hacer de cada día algo mágico (aunque cuando te hablo sobre algun problema que tengo me buscas soluciones y lo que quiero es apoyo y que me trates como bebé). Gracias por hacerme tan feliz, por poder contar con tu hombro al final de cada día.
+                    Te amo más de lo que las palabras pueden expresar <span class="heart-symbol">❤️</span>
+                </p>
+                <br>
+                <p>
+                    ¡Feliz San Valentín, mi vida! Que este año nos traiga aún más momentos inolvidables juntos.
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+       <p class="footer-text">Hecho con <span class="heart-symbol"> ❤️</span> para ti</p>
+        <p class="date">14 de Febrero de 2026</p> 
+       
+    </footer>
+
+    <script>
+        // Create floating hearts
+        function createFloatingHearts() {
+            const container = document.getElementById('floatingHearts');
+            const hearts = ['❤️', '💖', '💕', '💗', '💓'];
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+                
+                // Random position and animation delay
+                const leftPos = Math.random() * 100;
+                const delay = Math.random() * 15;
+                const duration = 10 + Math.random() * 15;
+                const size = 15 + Math.random() * 20;
+                
+                heart.style.left = `${leftPos}%`;
+                heart.style.animationDelay = `${delay}s`;
+                heart.style.animationDuration = `${duration}s`;
+                heart.style.fontSize = `${size}px`;
+                heart.style.color = ['#ff6b6b', '#4ecdc4', '#ffd166'][Math.floor(Math.random() * 3)];
+                
+                container.appendChild(heart);
+            }
+        }
+
+        // Hide loading screen
+        function hideLoading() {
+            const loading = document.getElementById('loading');
+            setTimeout(() => {
+                loading.classList.add('hidden');
+            }, 2000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            createFloatingHearts();
+            hideLoading();
+            
+            // Add scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe elements
+            document.querySelectorAll('.photo-card, .quote-card, .message-content').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
+
